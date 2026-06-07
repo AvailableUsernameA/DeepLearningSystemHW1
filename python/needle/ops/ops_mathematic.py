@@ -74,12 +74,13 @@ class EWisePow(TensorOp):
 
     def compute(self, a: NDArray, b: NDArray) -> NDArray:
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return a**b
         ### END YOUR SOLUTION
         
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        lhs, rhs = node.inputs
+        return out_grad*rhs*(lhs**(rhs-1)), out_grad*(lhs**rhs)*log(lhs)
         ### END YOUR SOLUTION
 
 def power(a, b):
@@ -94,12 +95,13 @@ class PowerScalar(TensorOp):
 
     def compute(self, a: NDArray) -> NDArray:
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return a ** self.scalar
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        a = node.inputs[0]
+        return out_grad*self.scalar*(a**(self.scalar-1))
         ### END YOUR SOLUTION
 
 
@@ -112,12 +114,13 @@ class EWiseDiv(TensorOp):
 
     def compute(self, a, b):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return a/b
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        a, b = node.inputs
+        return out_grad/b, -out_grad*a/(b**2)
         ### END YOUR SOLUTION
 
 
@@ -131,12 +134,12 @@ class DivScalar(TensorOp):
 
     def compute(self, a):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return a/self.scalar
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return out_grad/self.scalar
         ### END YOUR SOLUTION
 
 
