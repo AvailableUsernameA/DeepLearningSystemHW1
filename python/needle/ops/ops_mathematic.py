@@ -153,12 +153,12 @@ class Transpose(TensorOp):
 
     def compute(self, a):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return numpy.swapaxes(a, self.axes)
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return numpy.swapaxes(out_grad, self.axes)
         ### END YOUR SOLUTION
 
 
@@ -172,12 +172,13 @@ class Reshape(TensorOp):
 
     def compute(self, a):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return numpy.reshape(a, self.shape)
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        original_shape = node.inputs[0].shape
+        return out_grad.reshape(original_shape)
         ### END YOUR SOLUTION
 
 
@@ -191,12 +192,20 @@ class BroadcastTo(TensorOp):
 
     def compute(self, a):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return numpy.broadcast_to(a, self.shape)
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        input_shape = node.inputs[0].shape
+        output_shape = self.shape
+        sum_axes = []
+        padded_input_shape = [1] * (len(output_shape) - len(input_shape)) + list(input_shape)
+        for i, (in_dim, out_dim) in enumerate(zip(padded_input_shape, output_shape)):
+            if in_dim != out_dim:
+                sum_axes.append(i)
+        grad = out_grad.sum(tuple(sum_axes))
+        return grad.reshape(input_shape)
         ### END YOUR SOLUTION
 
 
@@ -210,12 +219,16 @@ class Summation(TensorOp):
 
     def compute(self, a):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return a.sum(self.axes)
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        input_shape = node.inputs[0].shape
+        new_shape = list(input_shape)
+        for axis in self.axes:
+            new_shape[axis] = 1
+        return out_grad.reshape(new_shape).broadcast_to(input_shape)
         ### END YOUR SOLUTION
 
 
