@@ -383,6 +383,7 @@ def compute_gradient_of_variables(output_tensor, out_grad):
     currentNode = output_tensor
     for node in reverse_topo_order:
         cur_grad = sum_node_list(node_to_output_grads_list[node])
+        node.grad = cur_grad
         if node.op:
             input_grad = node.op.gradient(cur_grad, node)
             for i, input_node in enumerate(node.inputs):
