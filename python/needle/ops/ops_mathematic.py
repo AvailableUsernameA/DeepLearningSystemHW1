@@ -239,12 +239,13 @@ def summation(a, axes=None):
 class MatMul(TensorOp):
     def compute(self, a, b):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return a@b
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        a, b = node.inputs
+        return matmul(out_grad, transpose(b)), matmul(transpose(a), out_grad)
         ### END YOUR SOLUTION
 
 
@@ -255,12 +256,12 @@ def matmul(a, b):
 class Negate(TensorOp):
     def compute(self, a):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return -a
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return -out_grad
         ### END YOUR SOLUTION
 
 
@@ -271,12 +272,13 @@ def negate(a):
 class Log(TensorOp):
     def compute(self, a):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return numpy.log(a)
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        a = node.inputs[0]
+        return out_grad/a
         ### END YOUR SOLUTION
 
 
@@ -287,12 +289,13 @@ def log(a):
 class Exp(TensorOp):
     def compute(self, a):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return numpy.exp(a)
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        a = node.inputs[0]
+        return numpy.exp(a)*out_grad
         ### END YOUR SOLUTION
 
 
@@ -303,12 +306,13 @@ def exp(a):
 class ReLU(TensorOp):
     def compute(self, a):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        return numpy.maximum(a, 0)
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        raise NotImplementedError()
+        a = node.inputs[0]
+        return out_grad*(a>0)
         ### END YOUR SOLUTION
 
 
