@@ -247,7 +247,14 @@ class MatMul(TensorOp):
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
         a, b = node.inputs
-        return out_grad@transpose(b), transpose(a)@out_grad
+        grad_a, grad_b = out_grad@transpose(b), transpose(a)@out_grad
+        if grad_a.shape != a.shape:
+            axes = tuple(range(len(grad_a.shape) - len(a.shape)))
+            grad_a = grad_a.sum(axes)
+        if grad_b.shape != b.shape:
+            axes = tuple(range(len(grad_b.shape) - len(b.shape)))
+            grad_b = grad_b.sum(axes)
+        return grad_a, grad_b
         ### END YOUR SOLUTION
 
 
