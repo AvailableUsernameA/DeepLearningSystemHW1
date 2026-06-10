@@ -247,7 +247,7 @@ class MatMul(TensorOp):
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
         a, b = node.inputs
-        return out_grad@b.T, a.T@out_grad
+        return out_grad@transpose(b), transpose(a)@out_grad
         ### END YOUR SOLUTION
 
 
