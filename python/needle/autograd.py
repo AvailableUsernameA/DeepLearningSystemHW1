@@ -388,7 +388,10 @@ def compute_gradient_of_variables(output_tensor, out_grad):
             for i, input_node in enumerate(node.inputs):
                 if input_node not in node_to_output_grads_list:
                     node_to_output_grads_list[input_node] = []
-                node_to_output_grads_list[input_node].append(input_grad[i])
+                if not isinstance(input_grad, (list, tuple)):
+                    node_to_output_grads_list[input_node].append(input_grad)
+                else:
+                    node_to_output_grads_list[input_node].append(input_grad[i])
         else:
             continue
     ### END YOUR SOLUTION
