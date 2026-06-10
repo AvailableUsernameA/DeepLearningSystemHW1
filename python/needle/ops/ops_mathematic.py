@@ -161,7 +161,7 @@ class Transpose(TensorOp):
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
         if self.axes is not None:
-            return numpy.swapaxes(out_grad, self.axes)
+            return numpy.swapaxes(out_grad, self.axes[0], self.axes[1])
         return numpy.swapaxes(out_grad, out_grad.ndim-1, out_grad.ndim-2)
         ### END YOUR SOLUTION
 
