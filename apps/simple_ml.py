@@ -119,6 +119,7 @@ def nn_epoch(X, y, W1, W2, lr=0.1, batch=100):
         
         W1 -= lr * grad_W1
         W2 -= lr * grad_W2
+    return W1, W2
     ### END YOUR SOLUTION
 
 
