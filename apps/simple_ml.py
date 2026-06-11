@@ -63,9 +63,9 @@ def softmax_loss(Z, y_one_hot):
         Average softmax loss over the sample. (ndl.Tensor[np.float32])
     """
     ### BEGIN YOUR SOLUTION
-    log_sum = np.log(np.sum(np.exp(Z), axis=1))
-    correct_class = Z[np.arange(Z.shape[0]), y_one_hot]
-    return np.mean(log_sum - correct_class)
+    log_sum = ndl.log(ndl.summation(ndl.exp(Z), axes=(1,)))
+    correct_class = ndl.summation(Z * y_one_hot, axes=(1,))
+    return (log_sum - correct_class).sum()/Z.shape[0]
     ### END YOUR SOLUTION
 
 
