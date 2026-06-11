@@ -324,7 +324,7 @@ class ReLU(TensorOp):
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
         a = node.inputs[0]
-        return out_grad*(a>0)
+        return out_grad*Tensor(a>0)
         ### END YOUR SOLUTION
 
 
