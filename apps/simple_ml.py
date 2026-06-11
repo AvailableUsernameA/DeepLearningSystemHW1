@@ -106,7 +106,7 @@ def nn_epoch(X, y, W1, W2, lr=0.1, batch=100):
         logits = A1 @ W2
         
         batch_y = ndl.Tensor(batch_y)
-        y_one_hot = ndl.one_hot(num_classes, batch_y)
+        y_one_hot = ndl.init.one_hot(num_classes, batch_y)
         loss = softmax_loss(logits, y_one_hot)
 
         loss.backward()
