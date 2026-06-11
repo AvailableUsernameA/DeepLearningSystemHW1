@@ -94,31 +94,25 @@ def nn_epoch(X, y, W1, W2, lr=0.1, batch=100):
     """
 
     ### BEGIN YOUR SOLUTION
+    num_classes = W2.shape[1]
     for i in range(0, len(y), batch):
         batch_X = X[i:i+batch]
         batch_y = y[i:i+batch]
         
+        batch_X = ndl.Tensor(batch_X)
         Z1 = batch_X @ W1
-        A1 = np.maximum(0, Z1)
+        A1 = ndl.relu(Z1)
 
         logits = A1 @ W2
         
-        Z2 = np.exp(logits)
-        Z2 /= np.sum(Z2, axis=1, keepdims=True)
+        batch_y = ndl.Tensor(batch_y)
+        y_one_hot = one_hot(num_classes, batch_y)
+        loss = softmax_loss(logits, y_one_hot)
+
+        loss.backward()
         
-        Z2[np.arange(batch_X.shape[0]),batch_y] -= 1
-        G2 = Z2 / batch_X.shape[0] # (batch, num_classes)
-        
-        grad_W2 = A1.T @ G2
-        
-        G1_A = G2 @ W2.T
-        
-        G1_Z = G1_A * (Z1 > 0)
-        
-        grad_W1 = batch_X.T @ G1_Z
-        
-        W1 -= lr * grad_W1
-        W2 -= lr * grad_W2
+        W1 -= lr * W1.grad
+        W2 -= lr * W2.grad
     return W1, W2
     ### END YOUR SOLUTION
 
